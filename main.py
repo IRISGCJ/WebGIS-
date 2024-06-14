@@ -58,20 +58,27 @@ m = folium.Map(zoom_start=11, tiles=None)
 tile_layers = {
     "Esri全球影像": "Esri.WorldImagery",
     "Carto地图": "CartoDB.Positron",
+    "高德地图": "Gaode.Normal"
 }
 
 for name, tile in tile_layers.items():
-    if "Carto地图" in name:
+    if "高德地图" in name:
         folium.TileLayer(
-            tile, 
+            tiles=tile, 
             name=name,
-            attr='Carto地图'
+            attr='高德地图'
         ).add_to(m)
     elif "Esri全球影像" in name:
         folium.TileLayer(
             tile, 
             name=name,
             attr='Esri全球影像'
+        ).add_to(m)
+    elif "Carto地图" in name:
+        folium.TileLayer(
+            tile, 
+            name=name,
+            attr='Carto地图'
         ).add_to(m)
 
 
