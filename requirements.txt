@@ -4,3 +4,5 @@ pandas
 folium
 streamlit_folium
 bs4
+request
+lxml
