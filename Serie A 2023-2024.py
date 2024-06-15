@@ -1,4 +1,3 @@
-import streamlit as st
 import requests
 from lxml import etree
 import pandas as pd
@@ -24,11 +23,10 @@ def parse_table_data(data):
         if len(cols) >= 4:
             team = cols[0].xpath('string()').strip()
             location = cols[1].xpath('string()').strip()
-            location_href = cols[1].xpath('.//a/@href')[0]
+            location_href = cols[5].xpath('.//a/@href')[0]
             location_url = f"https://en.wikipedia.org{location_href}"
             current_stadium = cols[5].xpath('string()').strip()
-            manager = cols[9].xpath('string()').strip()
-            results.append((team, location, location_url, current_stadium, manager))
+            results.append((team, location, location_url, current_stadium))
     return results[:20]  # 只保留前20个数据
 
 # 获取地理坐标
@@ -59,12 +57,12 @@ parsed_data = parse_table_data(raw_data)
     
 # 获取地理坐标
 teams_with_coords = []
-for team, location, location_url, current_stadium, manager in parsed_data:
+for team, location, location_url, current_stadium in parsed_data:
     coordinates = get_coordinates(location_url)
-    teams_with_coords.append((team, location, current_stadium, manager, coordinates))
+    teams_with_coords.append((team, location, current_stadium,coordinates))
     
 # 转换为DataFrame
-df = pd.DataFrame(teams_with_coords, columns=['Team', 'Location', 'Current Stadium', 'Manager', 'Coordinates'])
+df = pd.DataFrame(teams_with_coords, columns=['Team', 'Location', 'Current Stadium','Coordinates'])
 df1=df.set_index('Team')
 df1.to_csv('Serie A 2023-2024.csv')
 
