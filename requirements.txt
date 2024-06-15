@@ -3,3 +3,4 @@ numpy
 pandas
 folium
 streamlit_folium
+bs4
