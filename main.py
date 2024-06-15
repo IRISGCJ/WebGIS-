@@ -5,32 +5,50 @@ import folium
 from folium.plugins import MarkerCluster, MousePosition
 from streamlit_folium import st_folium
 
-st.title('Serie A 2023-2024')
-
 # 定义转换函数
 def dms_string_to_decimal(coord_str):
     def dms_to_decimal(d, m=0, s=0):
         return d + (m / 60.0) + (s / 3600.0)
     
-    parts = coord_str.replace('°', ' ').replace('′', ' ').replace('″', '').replace('N', '').replace('E', '').strip().split(',')
-    lat_dms = parts[0].strip().split()
-    lon_dms = parts[1].strip().split()
+    parts = coord_str.strip().split(', ')
+    lat_dms = parts[0].replace('°', ' ').replace('′', ' ').replace('″', '').replace('N', '').replace('S', '').strip().split()
+    lon_dms = parts[1].replace('°', ' ').replace('′', ' ').replace('″', '').replace('E', '').replace('W', '').strip().split()
     
     lat_deg = int(lat_dms[0])
     lat_min = int(lat_dms[1]) if len(lat_dms) > 1 else 0
     lat_sec = float(lat_dms[2]) if len(lat_dms) > 2 else 0
-    
+    lat_dir = parts[0][-1]
+
     lon_deg = int(lon_dms[0])
     lon_min = int(lon_dms[1]) if len(lon_dms) > 1 else 0
     lon_sec = float(lon_dms[2]) if len(lon_dms) > 2 else 0
+    lon_dir = parts[1][-1]
     
     lat = np.float64(dms_to_decimal(lat_deg, lat_min, lat_sec))
     lon = dms_to_decimal(lon_deg, lon_min, lon_sec)
     
+    if lat_dir == 'S':
+        lat = -lat
+    if lon_dir == 'W':
+        lon = -lon
+    
     return lat, lon
 
-# 读取文件
-df = pd.read_csv('Serie A 2023-2024.csv')
+st.title('Football Leagues 2023-2024')
+
+# 让用户选择联赛
+league_options = ['Premier League', 'Serie A']
+league_choice = st.selectbox('Select a League:', league_options)
+
+# 根据用户选择设置文件路径
+file_paths = {
+    'Premier League': 'Premier League 2023-2024.csv',
+    'Serie A': 'Serie A 2023-2024.csv'
+}
+
+# 读取用户选择的文件
+file_path = file_paths[league_choice]
+df = pd.read_csv(file_path)
 
 st.dataframe(df)
 
@@ -58,27 +76,20 @@ m = folium.Map(zoom_start=11, tiles=None)
 tile_layers = {
     "Esri全球影像": "Esri.WorldImagery",
     "Carto地图": "CartoDB.Positron",
-    "高德地图": "Gaode.Normal"
 }
 
 for name, tile in tile_layers.items():
-    if "高德地图" in name:
+    if "Carto地图" in name:
         folium.TileLayer(
-            tiles=tile, 
+            tile, 
             name=name,
-            attr='高德地图'
+            attr='Carto地图'
         ).add_to(m)
     elif "Esri全球影像" in name:
         folium.TileLayer(
             tile, 
             name=name,
             attr='Esri全球影像'
-        ).add_to(m)
-    elif "Carto地图" in name:
-        folium.TileLayer(
-            tile, 
-            name=name,
-            attr='Carto地图'
         ).add_to(m)
 
 
@@ -94,4 +105,3 @@ folium.LayerControl().add_to(m)
 MousePosition().add_to(m)
 
 st_folium(m, width=700, height=500)
-
