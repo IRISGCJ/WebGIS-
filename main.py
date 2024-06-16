@@ -72,12 +72,6 @@ bounds = [[min([c[0] for c in coords_list]), min([c[1] for c in coords_list])],
 # 创建地图对象
 m = folium.Map(zoom_start=11, tiles=None)
 
-# 创建三个 Tile（地图切片）图层
-tile_layers = {
-    "Esri全球影像": "Esri.WorldImagery",
-    "Carto地图": "CartoDB.Positron",
-}
-
 for name, tile in tile_layers.items():
     folium.TileLayer(
             name=name,
