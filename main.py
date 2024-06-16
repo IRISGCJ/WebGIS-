@@ -70,7 +70,7 @@ bounds = [[min([c[0] for c in coords_list]), min([c[1] for c in coords_list])],
           [max([c[0] for c in coords_list]), max([c[1] for c in coords_list])]]
 
 # 创建地图对象
-m = folium.Map(zoom_start=11, tiles=None)
+m = folium.Map(zoom_start=11)
 
 # 设置地图边界框
 m.fit_bounds(bounds)
