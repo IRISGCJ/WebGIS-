@@ -64,6 +64,7 @@ for key, value in team_info_dict.items():
     
 # 创建地图对象并添加选定球队的位置
 m = folium.Map(location=[lat, lon], zoom_start=15)
+folium.TileLayer(tiles='Esri.WorldImagery').add_to(m)
 folium.Marker(
     location=[lat, lon],
     popup=f"{team_choice}"
