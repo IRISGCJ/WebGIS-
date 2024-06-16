@@ -72,19 +72,12 @@ bounds = [[min([c[0] for c in coords_list]), min([c[1] for c in coords_list])],
 # 创建地图对象
 m = folium.Map(zoom_start=11, tiles=None)
 
-for name, tile in tile_layers.items():
-    folium.TileLayer(
-            name=name,
-        ).add_to(m)
-
+folium.TileLayer(name=name).add_to(m)
 
 # 设置地图边界框
 m.fit_bounds(bounds)
 
 feature_group.add_to(m)
-
-# 创建图层控制控件并添加到地图控件中
-folium.LayerControl().add_to(m)
 
 # 创建显示坐标控件并添加到地图控件中
 MousePosition().add_to(m)
