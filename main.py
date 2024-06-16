@@ -79,17 +79,8 @@ tile_layers = {
 }
 
 for name, tile in tile_layers.items():
-    if "Carto地图" in name:
-        folium.TileLayer(
-            tile, 
+    folium.TileLayer(
             name=name,
-            attr='Carto地图'
-        ).add_to(m)
-    elif "Esri全球影像" in name:
-        folium.TileLayer(
-            tile, 
-            name=name,
-            attr='Esri全球影像'
         ).add_to(m)
 
 
