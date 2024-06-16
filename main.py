@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import folium
-from folium.plugins import MarkerCluster, MousePosition
+from folium.plugins import MousePosition
 from streamlit_folium import st_folium
 
 # 定义转换函数
@@ -34,50 +34,43 @@ def dms_string_to_decimal(coord_str):
     
     return lat, lon
 
-st.title('Football Leagues 2023-2024')
-
-# 让用户选择联赛
-league_options = ['Premier League', 'Serie A']
-league_choice = st.selectbox('Select a League:', league_options)
-
-# 根据用户选择设置文件路径
+# 定义侧边栏
+st.sidebar.title('Football Leagues 2023-2024')
 file_paths = {
     'Premier League': 'Premier League 2023-2024.csv',
     'Serie A': 'Serie A 2023-2024.csv'
 }
+league_options = list(file_paths.keys())
+league_choice = st.sidebar.selectbox('Select a League:', league_options)
 
 # 读取用户选择的文件
 file_path = file_paths[league_choice]
 df = pd.read_csv(file_path)
 
-st.dataframe(df)
+# 在侧边栏显示球队名称供用户选择
+teams = df['Team'].tolist()
+team_choice = st.sidebar.selectbox('Select a Team:', teams)
 
-# 创建 POI 点矢量要素图层
-feature_group = folium.FeatureGroup(name="Teams")
+# 获取选定球队的详细信息
+team_info = df[df['Team'] == team_choice].iloc[0]
+coords = team_info['Coordinates']
+lat, lon = dms_string_to_decimal(coords)
 
-# 提取所有坐标点并计算边界
-coords_list = []
-for coords in df['Coordinates']:
-    lat, lon = dms_string_to_decimal(coords)
-    coords_list.append([lat, lon])
-    folium.Marker(
-        location=[lat, lon],
-        popup=f"{df.loc[df['Coordinates'] == coords, 'Team'].values[0]}"
-    ).add_to(feature_group)
-
-# 计算边界框
-bounds = [[min([c[0] for c in coords_list]), min([c[1] for c in coords_list])],
-          [max([c[0] for c in coords_list]), max([c[1] for c in coords_list])]]
-
-# 创建地图对象
-m = folium.Map(zoom_start=11)
-
-# 设置地图边界框
-m.fit_bounds(bounds)
-
-feature_group.add_to(m)
+# 在主页面显示选定球队的详细信息
+st.title(f'{team_choice} Details')
+team_info_dict = team_info.to_dict()
+for key, value in team_info_dict.items():
+    st.write(f"{value}")
+    
+# 创建地图对象并添加选定球队的位置
+m = folium.Map(location=[lat, lon], zoom_start=15)
+folium.Marker(
+    location=[lat, lon],
+    popup=f"{team_choice}"
+).add_to(m)
 
 # 创建显示坐标控件并添加到地图控件中
 MousePosition().add_to(m)
 
+# 使用 streamlit_folium 显示地图
 st_folium(m, width=700, height=500)
