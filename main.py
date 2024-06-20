@@ -64,13 +64,27 @@ for key, value in team_info_dict.items():
     
 # 创建地图对象并添加选定球队的位置
 m = folium.Map(location=[lat, lon], zoom_start=15)
-folium.TileLayer(tiles='Esri.WorldImagery').add_to(m)
+
+tile_layers = {
+    "OpenStreetMap"="openstreetmap"
+    "Esri全球影像": "Esri.WorldImagery",
+    "Carto地图": "CartoDB.Positron",
+}
+
+for name, tile in tile_layers.items():
+    if "OpenStreetMap" in name:
+        folium.TileLayer(tile).add_to(m)
+    elif "Esri全球影像" in name:
+        folium.TileLayer(tile).add_to(m)
+    elif "Carto地图" in name:
+        folium.TileLayer(tile).add_to(m)
+
 folium.Marker(
     location=[lat, lon],
     popup=f"{team_choice}"
 ).add_to(m)
 
-# 创建显示坐标控件并添加到地图控件中
+folium.LayrerControl().add_to(m)
 MousePosition().add_to(m)
 
 # 使用 streamlit_folium 显示地图
