@@ -66,7 +66,7 @@ for key, value in team_info_dict.items():
 m = folium.Map(location=[lat, lon], zoom_start=15)
 
 tile_layers = {
-    "OpenStreetMap": "openstreetmap"
+    "OpenStreetMap": "openstreetmap",
     "Esri全球影像": "Esri.WorldImagery",
     "Carto地图": "CartoDB.Positron",
 }
