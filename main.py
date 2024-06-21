@@ -67,8 +67,7 @@ m = folium.Map(location=[lat, lon], zoom_start=15)
 
 tile_layers = {
     "OpenStreetMap": "openstreetmap",
-    "Esri全球影像": "Esri.WorldImagery",
-    "Carto地图": "CartoDB.Positron",
+    "Esri全球影像": "Esri.WorldImagery"
 }
 
 for name, tile in tile_layers.items():
@@ -76,15 +75,13 @@ for name, tile in tile_layers.items():
         folium.TileLayer(tile).add_to(m)
     elif "Esri全球影像" in name:
         folium.TileLayer(tile).add_to(m)
-    elif "Carto地图" in name:
-        folium.TileLayer(tile).add_to(m)
 
 folium.Marker(
     location=[lat, lon],
     popup=f"{team_choice}"
 ).add_to(m)
 
-folium.LayrerControl().add_to(m)
+folium.LayerControl().add_to(m)
 MousePosition().add_to(m)
 
 # 使用 streamlit_folium 显示地图
