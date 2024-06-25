@@ -127,7 +127,7 @@ while True:
 
         # 创建Folium地图
         map_center = [(start_lat + end_lat) / 2, (start_lon + end_lon) / 2]
-        m1 = folium.Map(location=map_center, zoom_start=5)
+        m1 = folium.Map(location=map_center, zoom_start=10)
 
         #获取路线
         route=get_directions(client,start,end)
