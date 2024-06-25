@@ -1,5 +1,7 @@
 streamlit
-numpy
 pandas
+numpy
 folium
-streamlit_folium
+streamlit-folium
+openrouteservice
+
