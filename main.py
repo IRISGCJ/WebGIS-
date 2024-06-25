@@ -103,7 +103,7 @@ while True:
     MousePosition().add_to(m)
 
     # 使用 streamlit_folium 显示地图
-    st_folium(m, width=700, height=500)
+    st_folium(m)
     
     
 
@@ -141,5 +141,5 @@ while True:
         folium.GeoJson(route, name='路线').add_to(m)
         
         # 使用 streamlit_folium 显示地图
-        st_folium(m1, width=700, height=500)
+        st_folium(m1)
     break
