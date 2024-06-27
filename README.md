@@ -15,7 +15,7 @@
 
 ### 安装与运行
 
-- 本项目已经封装上传至streamlit-cloud，您可以访问 https://footballleagues2023-2024.streamlit.app 进行使用。
+- 本项目已经封装上传至streamlit-cloud，您可以访问 https://cjgan-footballclubs.streamlit.app 进行使用。
 
 ### 文件说明
 
