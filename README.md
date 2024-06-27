@@ -15,27 +15,7 @@
 
 ### 安装与运行
 
-1. **克隆代码库**
-   ```sh
-   git clone https://github.com/your-repository/project-name.git
-   cd project-name
-   ```
-
-2. **安装依赖**
-   ```sh
-   pip install -r requirements.txt
-   ```
-
-3. **运行爬虫程序**
-   ```sh
-   python SeriesA.py
-   python PremierLeague.py
-   ```
-
-4. **运行主程序**
-   ```sh
-   streamlit run main.py
-   ```
+- 本项目已经封装上传至streamlit-cloud，您可以访问 https://footballleagues2023-2024.streamlit.app 进行使用。
 
 ### 文件说明
 
@@ -72,14 +52,7 @@
 
 ### 依赖项
 
-- streamlit
-- pandas
-- folium
-- streamlit_folium
-- openrouteservice
-- requests
-- lxml
-- BeautifulSoup4
+- 请查看requirements.txt
 
 ### 注意事项
 
@@ -92,4 +65,4 @@
 
 ---
 
-通过上述步骤，您将能够成功运行并使用该应用程序来查看和分析英超联赛和意甲联赛球队的信息和路线规划。
+通过上述步骤，您将能够成功运行并使用该应用程序来查看2023-2024赛季英超联赛和意甲联赛球队的信息和路线规划。
