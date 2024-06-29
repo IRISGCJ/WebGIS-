@@ -7,13 +7,13 @@
 ## 2. 文件结构
 
 ```
-- app.py          # 主程序，包含Streamlit应用的核心功能
-- SeriesA.py      # 爬虫程序，用于从Wikipedia爬取意甲联赛球队信息
-- PremierLeague.py# 爬虫程序，用于从Wikipedia爬取英超联赛球队信息
-- README.md       # 项目说明文档
-- Serie A 2023-2024.csv   # 爬虫程序SeriesA.py生成的意甲联赛数据文件
-- Premier League 2023-2024.csv   # 爬虫程序PremierLeague.py生成的英超联赛数据文件
-- requirements.txt #运行环境所需库
+- main.py                        # 主程序，包含Streamlit应用的核心功能
+- Serie A 2023-2024.py           # 爬虫程序，用于从Wikipedia爬取意甲联赛球队信息
+- Premier League 2023-2024.py    # 爬虫程序，用于从Wikipedia爬取英超联赛球队信息
+- Serie A 2023-2024.csv          # 爬虫程序生成的意甲联赛数据文件
+- Premier League 2023-2024.csv   # 爬虫程序生成的英超联赛数据文件
+- requirements.txt               # 运行环境所需库
+- README.md                      # 项目说明文档
 ```
 
 ## 3. 安装与运行
@@ -28,7 +28,7 @@ streamlit run app.py
 
 ## 4. 文件说明
 
-### 主程序 `app.py`
+### 主程序 `main.py`
 
 主程序包含了整个Web应用的核心功能，使用Streamlit构建用户界面，并集成了地图展示和路线规划功能。以下是主要函数的介绍：
 
@@ -135,7 +135,7 @@ def get_coordinates(city_url):
 
 ## 5. 使用方法
 
-1. 运行主程序 `app.py` 启动Web应用。
+1. 运行主程序 `mian.py` 启动Web应用。
 2. 在侧边栏选择想要查看的联赛（英超或意甲）和具体球队。
 3. 查看选定球队的位置、详细信息，并在地图上展示。
 4. 在侧边栏选择起点和终点球队，选择出行方式，进行路线规划展示。
@@ -155,10 +155,13 @@ __具体版本请参考requirements.txt文件__
 
 ## 7. 注意事项
 
-- 在使用前请确保安装所有依赖项，并且拥有OpenRouteService的API密钥。
+- 在使用前请确保安装所有依赖项，并且拥有OpenRouteService的API密钥(本代码提供api，您也可以使用自己的ORS api)。
 - 确保网络连接畅通，以便从Wikipedia获取数据。
 - 如果爬虫程序运行失败，请检查Wikipedia页面结构变化或网络问题。
 
----
+__！！！由于使用OpenRouteService，以及Wikipedia，请确保运行所有程序时，使用科学上网。__
 
-这份完整的README文档包含了项目的详细说明、文件结构、安装运行方法、文件功能说明、使用方法、依赖项和注意事项，希望对您有所帮助！
+---
+甘成杰 10223901424 地理科学学院 地理科学 22基地班  
+iris.ganchengjie@outlook.com
+
