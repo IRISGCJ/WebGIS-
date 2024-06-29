@@ -23,7 +23,7 @@
 ### 运行应用程序
 
 ```bash
-streamlit run app.py
+streamlit run main.py
 ```
 
 ## 4. 文件说明
