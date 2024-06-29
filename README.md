@@ -18,7 +18,7 @@
 
 ## 3. 安装与运行
 
-本项目已经封装上传streamlit-cloud，您可以访问https://cjgan-footballclubs.streamlit.app/进行使用。
+本项目已经封装上传streamlit-cloud，您可以访问https://cjgan-footballclubs.streamlit.app/ 进行使用。
 
 ### 运行应用程序
 
