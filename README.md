@@ -1,64 +1,164 @@
-### 项目简介
+# 足球联赛地图和路线规划器
 
-该项目使用 Python 编写的 Streamlit 应用程序，结合爬虫技术，展示了2023-2024年英超联赛（Premier League）和意甲联赛（Serie A）球队的位置和相关信息。用户可以通过交互界面选择不同的球队并查看它们的详细信息、地图位置以及两地之间的路线规划。
+## 1. 项目简介
 
-### 文件结构
+这个项目是一个基于Streamlit构建的Web应用，允许用户探索2023-2024赛季的足球联赛（英超和意甲）。用户可以查看球队的详细信息、位置，并且可以在选定的球队之间进行路线规划。应用程序使用Folium进行交互式地图展示，并利用OpenRouteService进行路线规划。
 
-1. **main.py**
-   - 主程序，包含 Streamlit 应用的逻辑，负责数据加载、地图显示以及路线规划。
-   
-2. **SeriesA.py**
-   - 爬虫程序，用于从 Wikipedia 爬取意甲联赛球队信息和地理坐标，并保存为 CSV 文件。
+## 2. 文件结构
 
-3. **PremierLeague.py**
-   - 爬虫程序，用于从 Wikipedia 爬取英超联赛球队信息和地理坐标，并保存为 CSV 文件。
+```
+- app.py          # 主程序，包含Streamlit应用的核心功能
+- SeriesA.py      # 爬虫程序，用于从Wikipedia爬取意甲联赛球队信息
+- PremierLeague.py# 爬虫程序，用于从Wikipedia爬取英超联赛球队信息
+- README.md       # 项目说明文档
+- Serie A 2023-2024.csv   # 爬虫程序SeriesA.py生成的意甲联赛数据文件
+- Premier League 2023-2024.csv   # 爬虫程序PremierLeague.py生成的英超联赛数据文件
+- requirements.txt #运行环境所需库
+```
 
-### 安装与运行
+## 3. 安装与运行
 
-- 本项目已经封装上传至streamlit-cloud，您可以访问 https://cjgan-footballclubs.streamlit.app 进行使用。
+本项目已经封装上传streamlit-cloud，您可以访问https://cjgan-footballclubs.streamlit.app/进行使用。
 
-### 文件说明
+### 运行应用程序
 
-#### main.py
-- 使用 Streamlit 创建了一个交互式网页应用。
-- 加载并显示用户选择的联赛和球队的信息。
-- 通过 Folium 显示球队的位置地图。
-- 使用 OpenRouteService API 进行路线规划并在地图上展示。
+```bash
+streamlit run app.py
+```
 
-#### SeriesA.py
-- 从 Wikipedia 页面爬取意甲联赛球队信息。
-- 解析并提取球队名称、位置、当前体育场和地理坐标。
-- 将信息保存到 `Serie A 2023-2024.csv` 文件中。
+## 4. 文件说明
 
-#### PremierLeague.py
-- 从 Wikipedia 页面爬取英超联赛球队信息。
-- 解析并提取球队名称、位置、当前体育场和地理坐标。
-- 将信息保存到 `Premier League 2023-2024.csv` 文件中。
+### 主程序 `app.py`
 
-### 使用方法
+主程序包含了整个Web应用的核心功能，使用Streamlit构建用户界面，并集成了地图展示和路线规划功能。以下是主要函数的介绍：
 
-1. **选择联赛**
-   - 在侧边栏中选择“Premier League”或“Serie A”。
+#### 1. `dms_string_to_decimal(coord_str)`
 
-2. **选择球队**
-   - 在侧边栏中选择感兴趣的球队。
+将度分秒格式的地理坐标转换为十进制格式的经纬度。
 
-3. **查看球队信息**
-   - 页面主区域会显示球队的详细信息、位置地图以及地址信息。
+```python
+def dms_string_to_decimal(coord_str):
+    """
+    将度分秒格式的地理坐标转换为十进制格式的经纬度。
+    Args:
+        coord_str (str): 度分秒格式的地理坐标字符串，例如 '40°26′46″N, 79°58′56″W'。
 
-4. **路线规划**
-   - 在侧边栏选择起点和终点球队，并选择出行方式（驾驶、骑行或步行）。
-   - 页面会显示从起点到终点的路线图。
+    Returns:
+        tuple: 十进制经纬度，格式为 (latitude, longitude)。
+    """
+    # 实现代码...
+```
+#### 2. `get_directions(_client, start_coords, end_coords, travel_mode)`
 
-### 依赖项
+使用OpenRouteService API获取两个地点之间的路线信息。
 
-- 请查看requirements.txt
+```python
+@st.cache_data(ttl=3600.0)
+def get_directions(_client, start_coords, end_coords, travel_mode):
+    """
+    使用OpenRouteService API获取两个地点之间的路线信息。
+    Args:
+        _client (openrouteservice.Client): OpenRouteService客户端实例。
+        start_coords (tuple): 起始地点的经纬度，格式为 (longitude, latitude)。
+        end_coords (tuple): 终点地点的经纬度，格式为 (longitude, latitude)。
+        travel_mode (str): 出行方式，例如 'driving-car', 'cycling-regular', 'foot-walking'。
 
-### 注意事项
+    Returns:
+        dict: 路线信息的GeoJSON格式。
+    """
+    # 实现代码...
+```
 
-- 请确保在运行主程序前已经获取到 OpenRouteService API 密钥并将其填入 `main.py` 文件中。
-- 爬虫程序依赖于目标网页的结构，若目标网页结构发生变化，可能需要更新相应的 XPath 表达式。
+#### 3. `get_address(_client, lon, lat)`
+
+使用OpenRouteService的逆地理编码功能获取经纬度对应的地理位置地址信息。
+
+```python
+@st.cache_data(ttl=3600.0)
+def get_address(_client, lon, lat):
+    """
+    使用OpenRouteService的逆地理编码功能获取经纬度对应的地理位置地址信息。
+    Args:
+        _client (openrouteservice.Client): OpenRouteService客户端实例。
+        lon (float): 经度。
+        lat (float): 纬度。
+
+    Returns:
+        str: 地址信息。
+    """
+    # 实现代码...
+```
+
+### 爬虫程序 `SeriesA.py` 和 `PremierLeague.py`
+
+爬虫程序用于从Wikipedia页面爬取足球联赛（意甲和英超）的数据，并生成相应的CSV文件，包括球队的名称、位置、当前主场和地理坐标信息。
+
+```python
+def fetch_data(url, xpath):
+    """
+    从指定的URL使用XPath获取HTML数据。
+    Args:
+        url (str): 要爬取的页面的URL。
+        xpath (str): XPath表达式，用于定位需要提取的数据。
+
+    Returns:
+        list: 包含HTML数据的列表。
+    """
+    # 实现代码...
+```
+
+```python
+def parse_table_data(data):
+    """
+    解析HTML表格数据，提取足球球队的名称、位置、Wikipedia链接和当前主场信息。
+    Args:
+        data (list): 包含HTML数据的列表。
+
+    Returns:
+        list: 元组列表，每个元组包含球队名称、位置、Wikipedia链接和当前主场信息。
+    """
+    # 实现代码...
+```
+
+```python
+def get_coordinates(city_url):
+    """
+    根据Wikipedia页面中的信息获取城市或位置的地理坐标（经纬度）信息。
+    Args:
+        city_url (str): 城市或位置的Wikipedia页面URL。
+
+    Returns:
+        str: 地理坐标，格式为 'latitude, longitude'。
+    """
+    # 实现代码...
+```
+
+## 5. 使用方法
+
+1. 运行主程序 `app.py` 启动Web应用。
+2. 在侧边栏选择想要查看的联赛（英超或意甲）和具体球队。
+3. 查看选定球队的位置、详细信息，并在地图上展示。
+4. 在侧边栏选择起点和终点球队，选择出行方式，进行路线规划展示。
+
+## 6. 依赖项
+
+- Streamlit：用于构建交互式Web应用。
+- Pandas：用于数据处理和CSV文件操作。
+- Folium：用于创建地图和地图数据可视化。
+- streamlit-folium：用于在Streamlit应用中集成Folium地图。
+- OpenRouteService：用于获取路线规划和逆地理编码服务。
+- Requests：用于HTTP请求。
+- lxml：用于处理HTML和XML数据。
+- BeautifulSoup4：用于解析HTML数据。
+
+__具体版本请参考requirements.txt文件__
+
+## 7. 注意事项
+
+- 在使用前请确保安装所有依赖项，并且拥有OpenRouteService的API密钥。
+- 确保网络连接畅通，以便从Wikipedia获取数据。
+- 如果爬虫程序运行失败，请检查Wikipedia页面结构变化或网络问题。
 
 ---
 
-通过上述步骤，您将能够成功运行并使用该应用程序来查看2023-2024赛季英超联赛和意甲联赛球队的信息和路线规划。
+这份完整的README文档包含了项目的详细说明、文件结构、安装运行方法、文件功能说明、使用方法、依赖项和注意事项，希望对您有所帮助！
